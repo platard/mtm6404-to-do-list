@@ -90,15 +90,16 @@ function ListItem (props) { }
 
 ---
 # Functionality
-## Create a new task
-1. In the App component, declare a state variable 'list' using the useState hook and initialize it with the 'initial list'
 ```
 const initialList = [
       { task: 'Buy Milk', complete: false },
       { task: 'Feed Cat', complete: true }
     ]
-    
-    const [list, setList] = React.useState(() => initialList)
+```
+## Create a new task
+1. In the App component, declare a state variable 'list' using the useState hook and initialize it with the 'initial list'
+```    
+    const [list, setList] = React.useState(initialList)
 ```
 2. Pass the 'list' variabel to the List component
 
@@ -122,7 +123,7 @@ const list = props.list.map((item, id) => ({...item, id}))
 
 5. In the ListItem component, replace the static values with dynamic ones
 
-### Estate management & Form handling
+### State management & Form handling
 
 6. In the NewTaskForm component, set up a state variable 'task' using the useState hook, which manages the value of the input field
 
@@ -148,13 +149,12 @@ onSubmit={submitHandler}
 ```
 function submitHandler (e) {
       e.preventDefault()
-      setTask('')
     }
 ```
 
 ### Bottom-up approach
 
-9. In the submitHandler function, call the props.onAddTask function from the parent, pass an object with the 'task' value from the task state and a default 'complete' value of false. This allows the parent component to handle the addition of the new todo item
+9. In the submitHandler function, call the props.onAddTask function from the parent, pass an object with the 'task' value and a default 'complete' value set to false. This allows the parent component to handle the addition of the new todo item
 ```
 props.onAddTask({ task: task, complete: false })
 ```
@@ -168,9 +168,9 @@ setTask('')
 ```
 onAddTask={onAddTaskHandler}
 ```
-12. In the App component, define the 'onAddTaskHandler' function to add a new item to the 'list' state. Creates a new array by spreading the existing list array elements and appending the item to the end.
+12. In the App component, define the 'onAddTaskHandler' function to add a new item to the 'list' state. Create a new array by spreading the existing list array elements and appending the item to the end.
 ```
-function onAddHandler (item) {
+function onAddTaskHandler (item) {
     setList([...list, item])
 }
 ```
@@ -186,7 +186,7 @@ function onAddHandler (item) {
 ```
 
 ## Completed task
-1. Retrieve data from the form: Use the 'onChange' event attribute to call the 'changeHandler' function when the checkbox value changes, update the 'checked' attribute value.
+1. Retrieve data from the input checkbox: Use the 'onChange' event attribute to call the 'changeHandler' function when the checkbox value changes, update the 'checked' attribute value.
 ```
 checked={props.item.complete}
 onChange={changeHandler} 
@@ -230,7 +230,8 @@ function onUpdateHandler (list) {
 1. In the ListItem component, create the 'onClick' event attribute with the 'clickHandler' function.
 ```
 onClick={clickHandler}
-
+```
+```
 function clickHandler () {
       props.onDeleteItem(props.item)
 }
@@ -268,7 +269,7 @@ React.useEffect(() => {
   }, [list])
 ```
 
-2. Initialize the list state with the value retrieved from the browser's localStorage. If no stored value is found, it falls back to the initialList
+2. Initialize the list state with the value retrieved from the browser's localStorage. If no stored value is found, it falls back to an empty array
 ```
 const [list, setList] = React.useState(() => 
     JSON.parse(localStorage.getItem('list') ? localStorage.getItem('list') : '[]' )
